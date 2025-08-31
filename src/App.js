@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+// کامپوننت‌های اصلی صفحه - Main page components
+import ResponsiveHeaderNavigation from './components/ResponsiveHeaderNavigation'; // ناوبری واکنش‌گرا - Responsive navigation bar
+import SkillsPortfolio from './components/SkillsPortfolio'; // بخش خدمات و نمونه‌کارها - Services and portfolio section
+import LatestBlogsSection from './components/LatestBlogsSection'; // بخش آخرین مقالات تخصصی - Latest blog posts section
+import MainIntroSections from './components/MainIntroSections'; // معرفی اولیه سایت - Main introduction section
+import { Contact, Footer, Lightbox } from './components/Contact'; // تماس، فوتر و لایت‌باکس - Contact, footer, and lightbox
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {/* ناوبری بالای صفحه - Top navigation */}
+      <ResponsiveHeaderNavigation />
+
+      {/* معرفی اولیه - Intro section */}
+      <MainIntroSections />
+
+      {/* خدمات و نمونه‌کارها - Services and portfolio */}
+      <SkillsPortfolio />
+
+      {/* مقالات تخصصی - Blog section */}
+      <LatestBlogsSection />
+
+      {/* فرم تماس با ما - Contact form */}
+      <Contact />
+
+      {/* فوتر سایت - Website footer */}
+      <Footer />
+
+      {/* نمایش تصویر بزرگ - Lightbox for images */}
+      <Lightbox />
+    </>
   );
 }
 
-export default App;
+export default App; 

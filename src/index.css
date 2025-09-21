@@ -596,6 +596,9 @@ align-items:center;
   flex: 0 0 100%;
   max-width: 100%;
   margin-top: 50px;
+  display:flex;
+  justify-content:center;
+
 }
 
 .postfolio .tab-menu ul{
@@ -611,14 +614,22 @@ align-items:center;
   font-size: 1.7rem;
   cursor: pointer;
   padding-bottom: 10px;
+  padding:10px 20px;
+  margin:0 5px;
+  background-color: #b9b6b6ff;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+  transition:all 0.3s ease;
+
 }
 .portfolio-item h4{
     color: #D84315;
 
 }
 .postfolio .tab-menu ul li.active{
-  color: #D84315;
-  border-bottom: 2px solid #D84315;
+  background-color:  #eae6e6ff;
+  border-bottom: 3px solid #D84315;
 }
 
 .postfolio .portfolio-gallery{
@@ -1099,7 +1110,7 @@ align-items:center;
 .hamburger-menu{
   width: 40px;
   height: 40px;
-  background:rgb(180, 176, 176);
+  background: #d84215e1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1165,11 +1176,57 @@ align-items:center;
   -ms-transform: rotate(-45deg);
   -o-transform: rotate(-45deg);
 }
+html, body, #root {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden;
+}
+.chat-gpt-query-model .flip-y {
+  display: none !important;
+  position: absolute !important;
+  left: -9999px !important;
+}
+* {
+  box-sizing: border-box;
+}
 
-@media (min-width: 450px){
-     html {
-    padding-left: 0px;
+@media (min-width: 320px) and (max-width: 463px){
+  .container {
+}
+.impact-itemm .cardd {
+ margin: -2px;
+ margin-bottom:15px;
+ decoration:ltr;
   }
+  .impact-itemm{
+    padding-right:0px;
+  }
+ container {
+    padding-right: -15px;
+}
+.cardd {
+  background: #ffffff;
+  width: 160px;
+   }
+}
+@media (min-width: 463px) and (max-width: 516px){
+  .container {
+}
+.impact-itemm .cardd {
+ margin: -2px;
+ margin-bottom:15px;
+ decoration:ltr;
+  }
+  .impact-itemm{
+    padding-right:0px;
+  }
+ container {
+    padding-right: -15px;
+}
+.cardd {
+  background: #ffffff;
+  width: 220px;
+   }
 }
 @media screen and (max-width: 767px) {
   .flexx h2{
@@ -1182,13 +1239,13 @@ align-items:center;
 
   .container{
       max-width: 740px;
+      
   }
        .impact-itemm {
         justify-content:center;
         align-items:space-between;
         margin-right:40%;
-
-    direction:rtl;
+        direction:rtl;
        }
 
   .contact form .input-group input{

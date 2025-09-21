@@ -1,5 +1,4 @@
-
-import React, { useState } from "react"; 
+import React, { useState, useEffect } from "react";
 import b from '../assets/b.jpg';
 import bb from '../assets/bb.jpg'; 
 import bbb from '../assets/bbb.jfif'; 
@@ -12,14 +11,31 @@ import ll from '../assets/ll.jpg';
 import lll from '../assets/lll.jpg';
 import llll from '../assets/llll.jpg'; 
 import '@fortawesome/fontawesome-free/css/all.min.css';
-
-// کامپوننت اصلی نمایش خدمات و نمونه‌کارها - Main component for services and portfolio
+// Main component for displaying services and portfolios
+// کامپوننت اصلی نمایش خدمات و نمونه‌کارها
 const SkillsPortfolio = () => {
-  const [activeFilter, setActiveFilter] = useState("all"); // فیلتر فعال برای دسته‌بندی نمونه‌کارها - Active filter for portfolio categories
-  const [lightboxImg, setLightboxImg] = useState(null); // تصویر انتخاب‌شده برای نمایش بزرگ - Selected image for lightbox
-  const [isLightboxOpen, setIsLightboxOpen] = useState(false); // وضعیت باز بودن لایت‌باکس - Lightbox open state
+  const [activeFilter, setActiveFilter] = useState("all");
+  const [lightboxImg, setLightboxImg] = useState(null);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [lastTap, setLastTap] = useState(0);
+  // Mobile device detection
+  // تشخیص دستگاه تلفن همراه
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkIsMobile);
+    };
+  }, []);
 
-  const portfolioItems = [ /* لیست نمونه‌کارها با نوع و تصویر - Portfolio items with type and image */
+  const portfolioItems = [
     { type: "portfolio", image: k, label: "کاشت ابرو" },
     { type: "portfolio", image: kk, label: "کاشت ابرو" },
     { type: "portfolio", image: kkk, label: "کاشت ابرو" },
@@ -35,26 +51,54 @@ const SkillsPortfolio = () => {
 
   const filteredItems = activeFilter === "all"
     ? portfolioItems
-    : portfolioItems.filter(item => item.type === activeFilter); // فیلتر کردن آیتم‌ها بر اساس دسته‌بندی - Filter items by category
+    : portfolioItems.filter(item => item.type === activeFilter);
 
   const handleFilterChange = (filter) => {
-    setActiveFilter(filter); // تغییر فیلتر فعال - Change active filter
+    setActiveFilter(filter);
   };
 
   const openLightbox = (image) => {
-    setLightboxImg(image); // تنظیم تصویر برای لایت‌باکس - Set image for lightbox
-    setIsLightboxOpen(true); // باز کردن لایت‌باکس - Open lightbox
+    setLightboxImg(image);
+    setIsLightboxOpen(true);
   };
 
   const closeLightbox = () => {
-    setIsLightboxOpen(false); // بستن لایت‌باکس - Close lightbox
+    setIsLightboxOpen(false);
+  };
+  // Click management for mobile devices
+  // مدیریت کلیک برای دستگاه‌های موبایل
+  const handleItemClick = (index, image, e) => {
+    if (isMobile) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - lastTap;
+      
+      if (tapLength < 300 && tapLength > 0) {
+        // Double tap - open lightbox
+        // دابل تاپ - باز کردن لایت‌باکس
+        openLightbox(image);
+        setHoveredItem(null);
+      } else {
+        // Simple top - enable hover mode
+        // تاپ ساده - فعال کردن حالت hover
+        setHoveredItem(hoveredItem === index ? null : index);
+      }
+      
+      setLastTap(currentTime);
+    } else {
+      // On desktop - open lightbox with one click
+      // در دسکتاپ - باز کردن لایت‌باکس با یک کلیک
+      openLightbox(image);
+    }
   };
 
   return (
     <>
-      {/* بخش خدمات درمانی و زیبایی - Medical and beauty services section */}
-      <section id="skill" className="skill">
-        <div className="container">
+      {/* بخش خدمات درمانی و زیبایی */  /* Medical and beauty services department */}
+      <section id="skill" className="skill" data-aos="fade-up">
+        <div className="container" >
           <div className="row align-items">
             <div className="title">
               <div className="flex">
@@ -67,11 +111,11 @@ const SkillsPortfolio = () => {
 
             <div className="skill-description">
               <div className="title">
-                {/* توضیحات متنی درباره خدمات - Text description about services */}
+                {/* توضیحات متنی درباره خدمات */  /* Text description about the service */}
               </div>
 
-              <div className="impact-highlights">
-                {/* لیست خدمات با آیکون و توضیح - List of services with icon and description */}
+              <div className="impact-highlights" data-aos="fade-right">
+                {/* لیست خدمات با آیکون و توضیح */  /* List of services with icons and descriptions */}
                 {[
                   { icon: "fas fa-medkit", title: "درمان تخصصی پوست", desc: "رفع جوش، لک، چین‌وچروک و سایر مشکلات پوستی با روش‌های علمی و نوین." },
                   { icon: "fas fa-user-shield", title: "مشاوره و مراقبت پوستی", desc: "ارائه برنامه‌های مراقبتی شخصی‌سازی‌شده برای حفظ سلامت پوست در بلندمدت." },
@@ -86,19 +130,19 @@ const SkillsPortfolio = () => {
                   { icon: "fas fa-star", title: "درخشش و شفافیت پوست", desc: "افزایش روشنایی و شفافیت پوست با ماسک‌های تخصصی." }
                 ].map((service, index) => (
                   <div className="impact-item" key={index}>
-                    <div className="icon"><i className={service.icon}></i></div>
+                    <div className="icon" data-aos="fade-right"><i className={service.icon}></i></div>
                     <h4>{service.title}</h4>
-                    <p>{service.desc}</p>
+                    <p data-aos="fade-left">{service.desc}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* کارت‌های خدمات تصویری - Visual service cards */}
+            {/* کارت‌های خدمات تصویری */ /* Image service cards */ }
             <div className="skill-img">
               <div className="impact-item">
                 <div className="impact-itemm">
-                  <div className="service-group">
+                  <div className="service-group" data-aos="fade-down">
                     {[
                       { icon: "fas fa-spa", title: "پاکسازی پوست", desc: "حذف آلودگی‌ها " },
                       { icon: "fas fa-leaf", title: "مراقبت طبیعی", desc: "  ترکیبات گیاهی برای پوست" },
@@ -120,7 +164,7 @@ const SkillsPortfolio = () => {
 
               <div className="impact-itemtow">
                 <div className="impact-itemm">
-                  <div className="service-group">
+                  <div className="service-group"  data-aos="fade-up">
                     {[
                       { icon: "fas fa-medkit", title: "درمان مشکلات پوستی", desc: "رفع جوش، چین‌وچروک" },
                       { icon: "fas fa-user-shield", title: "محافظت و مشاوره", desc: " راهکارهای مراقبتی" },
@@ -144,76 +188,78 @@ const SkillsPortfolio = () => {
         </div>
       </section>
     
- 
-{/* نمونه کارها - Portfolio section */}
-<section id="portfolio" className="postfolio">
-  <div className="container">
-    <div className="row">
-      <div className="title">
-        <h2>نمونه کارها</h2>
-        <p>در این بخش، نمونه‌هایی از خدمات زیبایی و درمانی ارائه‌شده توسط دکتر زهرا صالحی را مشاهده می‌کنید.</p>
-      </div>
-
-      {/* لیست خدمات نمونه‌کارها - Portfolio service list */}
-      <div className="portfolio-container">
-        <div className="row">
-          {[
-            { title: "درمان مشکلات پوستی", desc: "رفع جوش، لک، چین‌وچروک و مشکلات پوستی با روش‌های نوین و کارآمد." },
-            { title: "جوان‌سازی پوست", desc: "بازگرداندن طراوت و جوانی پوست با بهترین تکنیک‌های زیبایی." },
-            { title: "محافظت و مشاوره", desc: "ارائه راهکارهای مراقبتی برای حفظ سلامت پوست در طولانی‌مدت." },
-            { title: "زیبایی ماندگار", desc: "تزریق ژل،  و روش‌های تخصصی که ظاهر شما را ارتقا می‌دهد." },
-            { title: "لیزر موهای زائد", desc: "از بین بردن موهای ناخواسته بدن و صورت برای پوستی صاف و لطیف." },
-            { title: "درمان تیرگی زیر چشم", desc: "رفع حلقه‌های تیره و گودی زیر چشم با تکنیک‌های مدرن زیبایی." },
-          ].map((service, index) => (
-            <div className="portfolio-item" key={index}>
-              <h4>{service.title}</h4>
-              <p>{service.desc}</p>
+      {/* نمونه کارها */  /* Portfolio */}
+      <section id="portfolio" className="postfolio">
+        <div className="container">
+          <div className="row">
+            <div className="title">
+              <h2>نمونه کارها</h2>
+              <p>در این بخش، نمونه‌هایی از خدمات زیبایی و درمانی ارائه‌شده توسط دکتر زهرا صالحی را مشاهده می‌کنید.</p>
             </div>
-          ))}
-        </div>
-      </div>
-    </div>
 
-    {/* فیلتر دسته‌بندی‌ها - Category filter tabs */}
-    <div className="row">
-      <div className="tab-menu">
-        <ul id="tab-btn">
-          <li className={activeFilter === "all" ? "active" : ""} onClick={() => handleFilterChange("all")}>همه</li>
-          <li className={activeFilter === "woocamerce" ? "active" : ""} onClick={() => handleFilterChange("woocamerce")}>تزریق فیلر</li>
-          <li className={activeFilter === "portfolio" ? "active" : ""} onClick={() => handleFilterChange("portfolio")}>کاشت ابرو</li>
-          <li className={activeFilter === "construction" ? "active" : ""} onClick={() => handleFilterChange("construction")}>عمل بینی</li>
-        </ul>
-      </div>
-    </div>
-
-    {/* گالری تصاویر نمونه‌کارها - Portfolio image gallery */}
-    <div className="row">
-      <div className="portfolio-gallery">
-        {filteredItems.map((item, index) => (
-          <div className="item" data-id={item.type} key={index}>
-            <div className="inner" onClick={() => openLightbox(item.image)}>
-              <img src={item.image} alt="" />
-              <div className="overlay">
-                <span><i className="fas fa-eye"></i></span>
-                <h3>{item.label}</h3>
+            {/* لیست خدمات نمونه‌کارها */ /* List of sample services */}
+            <div className="portfolio-container">
+              <div className="row">
+                {[
+                  { title: "درمان مشکلات پوستی", desc: "رفع جوش، لک، چین‌وچروک و مشکلات پوستی با روش‌های نوین و کارآمد." },
+                  { title: "جوان‌سازی پوست", desc: "بازگرداندن طراوت و جوانی پوست با بهترین تکنیک‌های زیبایی." },
+                  { title: "محافظت و مشاوره", desc: "ارائه راهکارهای مراقبتی برای حفظ سلامت پوست در طولانی‌مدت." },
+                  { title: "زیبایی ماندگار", desc: "تزریق ژل،  و روش‌های تخصصی که ظاهر شما را ارتقا می‌دهد." },
+                  { title: "لیزر موهای زائد", desc: "از بین بردن موهای ناخواسته بدن و صورت برای پوستی صاف و لطیف." },
+                  { title: "درمان تیرگی زیر چشم", desc: "رفع حلقه‌های تیره و گودی زیر چشم با تکنیک‌های مدرن زیبایی." },
+                ].map((service, index) => (
+                  <div className="portfolio-item" key={index}>
+                    <h4  data-aos="fade-right">{service.title}</h4>
+                    <p  data-aos="fade-left">{service.desc}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
-        ))}
-      </div>
-    </div>
-  </div>
-</section>
 
-{/* لایت‌باکس برای نمایش تصویر بزرگ - Lightbox for enlarged image */}
-{isLightboxOpen && (
-  <div className="lightbox show" onClick={closeLightbox}>
-    <span className="close-lightbox" onClick={closeLightbox}>
-      <i className="fas fa-times"></i>
-    </span>
-    <img src={lightboxImg} alt="عکس انتخاب شده" />
-  </div>
-)}
+          {/* فیلتر دسته‌بندی‌ها */  /* Filter categories */}
+          <div className="row">
+            <div className="tab-menu">
+              <ul id="tab-btn">
+                <li className={activeFilter === "all" ? "active" : ""} onClick={() => handleFilterChange("all")}>همه</li>
+                <li className={activeFilter === "woocamerce" ? "active" : ""} onClick={() => handleFilterChange("woocamerce")}>تزریق فیلر</li>
+                <li className={activeFilter === "portfolio" ? "active" : ""} onClick={() => handleFilterChange("portfolio")}>کاشت ابرو</li>
+                <li className={activeFilter === "construction" ? "active" : ""} onClick={() => handleFilterChange("construction")}>عمل بینی</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* گالری تصاویر نمونه‌کارها */  /* Portfolio Image Gallery */}
+          <div className="row">
+            <div className="portfolio-gallery">
+              {filteredItems.map((item, index) => (
+                <div className="item" data-id={item.type} key={index}>
+                  <div  data-aos="fade-up"
+                    className="inner" 
+                    onClick={(e) => handleItemClick(index, item.image, e)}
+                    onMouseEnter={() => !isMobile && setHoveredItem(index)}
+                    onMouseLeave={() => !isMobile && setHoveredItem(null)}
+                  >
+                    <img src={item.image} alt="" />
+                    <div className={`overlay ${hoveredItem === index ? 'active' : ''}`}>
+                      <span><i className="fas fa-eye"></i></span>
+                      <h3>{item.label}</h3>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* لایت‌باکس برای نمایش تصویر بزرگ */  /* Lightbox to display large image */}
+      {isLightboxOpen && (
+        <div className="lightbox show" onClick={closeLightbox}>
+          <img src={lightboxImg} alt="عکس انتخاب شده" />
+        </div>
+      )}
+
 
     </>
   );

@@ -28,10 +28,10 @@ const LatestBlogsSection = () => {
 
   const renderBlogs = () =>
     blogList.map((blog, index) => (
-      <div className="blog-content" key={index}>
+      <div className="blog-content" key={index}  data-aos="fade-down">
         <img src={blog.img} alt="" /> {/* تصویر مقاله - Blog image */}
         <div className="blog-description">
-          <h2>{blog.title}</h2> {/* عنوان مقاله - Blog title */}
+          <h2  data-aos="fade-left">{blog.title}</h2> {/* عنوان مقاله - Blog title */}
           <div className="blog-info">
             <span>
               <i className="fas fa-user-md"></i>
@@ -42,7 +42,7 @@ const LatestBlogsSection = () => {
               {blog.date} {/* تاریخ انتشار مقاله - Blog date */}
             </span>
           </div>
-          <p>
+          <p  data-aos="fade-right">
             اطلاعات تخصصی درباره روش‌های نوین درمان و زیبایی پوست که توسط دکتر
             محمد صالحی ارائه شده‌اند.
           </p> {/* توضیح مقاله - Blog summary */}
